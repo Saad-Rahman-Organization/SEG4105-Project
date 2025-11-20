@@ -11,12 +11,20 @@
     flutter pub get
     dart run build_runner build --delete-conflicting-outputs
 
-3.  Run on your emulator/device:
+3.  Run on emulator/device:
 
-    flutter run -d emulator   # or your device id
+    flutter run -d emulator 
 
-Notes: The app now builds and runs; you may see a quick RenderFlex overflow message in the results screen on very small widths—adjust padding if needed.
+Optional: 
+
+  For initial testing, I would reccomend running:
+
+    flutter run -d chrome
+
+  and then moving on to an emulator/device run. 
+  
+MAAZ ZAIDI, 300246507
 
 # Backend
 
-SAAD RAHMAN WARSI 300249227
+SAAD RAHMAN WARSI, 300249227
