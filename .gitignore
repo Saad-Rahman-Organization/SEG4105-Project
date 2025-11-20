@@ -5,41 +5,95 @@
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
-.swiftpm/
-migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ
+.idea/
 *.iml
 *.ipr
 *.iws
-.idea/
+atlassian-ide-plugin.xml
+nbproject/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter/Dart
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
+**/ios/Pods/
+**/ios/DerivedData/
+**/ios/Flutter/ephemeral/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Runner/GeneratedPluginRegistrant.*
 
-# Symbolication related
-app.*.symbols
+# Android
+**/android/.gradle/
+**/android/captures/
+**/android/local.properties
+**/android/key.properties
+**/android/app/src/main/assets/flutter_assets/
+*.apk
+*.aab
 
-# Obfuscation related
-app.*.map.json
+# Xcode
+*.hmap
+*.xccheckout
+*.xcscmblueprint
+*.xcscheme
+*.xcscheme
+*.xcworkspace
+*.xcuserstate
+*.xcworkspace/contents.xcworkspacedata
+xcuserdata/
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Cocoapods
+Pods/
+Podfile.lock
+
+# Web
+**/web/build/
+**/web/dart_tool/
+**/web/.dart_tool/
+
+# Windows
+**/windows/flutter/ephemeral/
+**/windows/CMakefiles/
+**/windows/runner/Debug/
+**/windows/runner/Profile/
+**/windows/runner/Release/
+**/windows/x64/
+.vs/
+**/Generated.xcconfig
+**/app.flx
+**/compile.snapshot
+**/GeneratedPluginRegistrant.swift
+**/flutter_assets.zip
+**/kernel_blob.bin
+**/run.bat
+**/run.sh
+**/snap.jar
+**/snapshot.lock
+**/snapshot.d
+**/struct.d
+/ios/Flutter/flutter_export_environment.sh
+project.xcworkspace
+ServiceDefinitions.json
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+pubspec.lock
+/ios/Pods/
+/ios/Flutter/
+/ios/.symlinks/
+*.keystore
+*.jks
+**/ios/Runner.xcworkspace
+**/ios/Runner.xcodeproj/project.xcworkspace/
+**/ios/Runner.xcodeproj/xcuserdata/

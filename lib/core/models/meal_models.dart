@@ -8,6 +8,16 @@ part 'meal_models.g.dart';
 enum Confidence { high, medium, low }
 
 @freezed
+class IngredientPortion with _$IngredientPortion {
+  const factory IngredientPortion({
+    required String name,
+    String? portionSize,
+  }) = _IngredientPortion;
+
+  factory IngredientPortion.fromJson(Map<String, dynamic> json) => _$IngredientPortionFromJson(json);
+}
+
+@freezed
 class CaptureInfo with _$CaptureInfo {
   const factory CaptureInfo({
     required String localPath,
@@ -33,16 +43,16 @@ class MealPreferences with _$MealPreferences {
 @freezed
 class Macros with _$Macros {
   const factory Macros({
-    required int carbs,
-    required int protein,
-    required int fat,
+    required double carbs,
+    required double protein,
+    required double fat,
   }) = _Macros;
 
   const Macros._();
 
   factory Macros.fromJson(Map<String, dynamic> json) => _$MacrosFromJson(json);
 
-  int get total => carbs + protein + fat;
+  double get total => carbs + protein + fat;
 }
 
 @freezed
@@ -52,6 +62,7 @@ class IdentifiedFood with _$IdentifiedFood {
     required String name,
     required int calories,
     required Macros macros,
+    String? portionSize,
     String? thumbnailUrl,
     double? confidence,
     List<String>? highlights,
@@ -73,6 +84,8 @@ class MealAnalysis with _$MealAnalysis {
     required Macros macros,
     required String qualitativeFeedback,
     required List<String> warnings,
+    String? mealTag,
+    @Default([]) List<IngredientPortion> ingredients,
   }) = _MealAnalysis;
 
   factory MealAnalysis.fromJson(Map<String, dynamic> json) => _$MealAnalysisFromJson(json);

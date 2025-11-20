@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/meal_models.dart';
+import '../../../core/utils/formatters.dart';
 
 class MacroDonutChart extends StatelessWidget {
   const MacroDonutChart({super.key, required this.macros});
@@ -35,7 +36,7 @@ class MacroDonutChart extends StatelessWidget {
                       value: slice.value,
                       color: slice.color,
                       radius: 70,
-                      title: '${slice.value.toInt()}g',
+                      title: NutriFormatters.gramsShort(slice.value),
                       titleStyle: theme.textTheme.labelMedium?.copyWith(color: Colors.white),
                     ),
                   )

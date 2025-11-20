@@ -5,9 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../core/utils/mock_data.dart';
+import '../../../core/services/meal_analysis_service.dart';
 import '../../camera/providers/capture_providers.dart';
 import '../../results/providers/analysis_draft_provider.dart';
 
@@ -17,40 +16,35 @@ class ProcessingScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final payload = ref.watch(capturePayloadProvider);
-    final hints = [
-      'Detecting ingredients...',
-      'Estimating portion sizes...',
-      'Balancing macros...',
-      'Cross-checking allergens...',
-    ];
-    final hintIndex = useState(0);
-    final uuid = useMemoized(Uuid.new);
-
-    useEffect(() {
-      Timer? timer;
-      timer = Timer.periodic(const Duration(seconds: 2), (_) {
-        hintIndex.value = (hintIndex.value + 1) % hints.length;
-      });
-      return () => timer?.cancel();
-    }, []);
+    final status = useState('Preparing your photo...');
+    final elapsed = useState(const Duration());
 
     useEffect(() {
       if (payload == null) return null;
       bool cancelled = false;
+      final stopwatch = Stopwatch()..start();
+      Timer? ticker;
+      ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+        elapsed.value = stopwatch.elapsed;
+      });
+
       Future<void> run() async {
         try {
-          await Future<void>.delayed(const Duration(seconds: 3));
+          status.value = 'Uploading photo...';
+          final service = ref.read(mealAnalysisServiceProvider);
+          final analysis = await service.analyzeMeal(payload: payload);
           if (cancelled) return;
-          final template = MockData.sampleAnalyses.first;
-          final analysis = template.copyWith(
-            id: uuid.v4(),
-            localId: payload.localId,
-            timestamp: DateTime.now(),
-          );
           ref.read(analysisDraftProvider.notifier).state = analysis;
           ref.read(capturePayloadProvider.notifier).state = null;
           if (context.mounted) {
             context.goNamed('results', pathParameters: {'id': analysis.id});
+          }
+        } on MealAnalysisException catch (error) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(error.message)),
+            );
+            context.pop();
           }
         } catch (error) {
           if (context.mounted) {
@@ -59,11 +53,18 @@ class ProcessingScreen extends HookConsumerWidget {
             );
             context.pop();
           }
+        } finally {
+          stopwatch.stop();
+          ticker?.cancel();
         }
       }
 
       run();
-      return () => cancelled = true;
+      return () {
+        cancelled = true;
+        stopwatch.stop();
+        ticker?.cancel();
+      };
     }, [payload]);
 
     return Scaffold(
@@ -101,15 +102,18 @@ class ProcessingScreen extends HookConsumerWidget {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 12),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    child: Text(
-                      hints[hintIndex.value],
-                      key: ValueKey(hints[hintIndex.value]),
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                    ),
+                  Text(
+                    status.value,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Elapsed: ${elapsed.value.inSeconds}s',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ],
               ),

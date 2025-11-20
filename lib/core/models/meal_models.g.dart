@@ -6,6 +6,20 @@ part of 'meal_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$IngredientPortionImpl _$$IngredientPortionImplFromJson(
+        Map<String, dynamic> json) =>
+    _$IngredientPortionImpl(
+      name: json['name'] as String,
+      portionSize: json['portionSize'] as String?,
+    );
+
+Map<String, dynamic> _$$IngredientPortionImplToJson(
+        _$IngredientPortionImpl instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'portionSize': instance.portionSize,
+    };
+
 _$CaptureInfoImpl _$$CaptureInfoImplFromJson(Map<String, dynamic> json) =>
     _$CaptureInfoImpl(
       localPath: json['localPath'] as String,
@@ -41,9 +55,9 @@ Map<String, dynamic> _$$MealPreferencesImplToJson(
     };
 
 _$MacrosImpl _$$MacrosImplFromJson(Map<String, dynamic> json) => _$MacrosImpl(
-      carbs: (json['carbs'] as num).toInt(),
-      protein: (json['protein'] as num).toInt(),
-      fat: (json['fat'] as num).toInt(),
+      carbs: (json['carbs'] as num).toDouble(),
+      protein: (json['protein'] as num).toDouble(),
+      fat: (json['fat'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$MacrosImplToJson(_$MacrosImpl instance) =>
@@ -59,6 +73,7 @@ _$IdentifiedFoodImpl _$$IdentifiedFoodImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       calories: (json['calories'] as num).toInt(),
       macros: Macros.fromJson(json['macros'] as Map<String, dynamic>),
+      portionSize: json['portionSize'] as String?,
       thumbnailUrl: json['thumbnailUrl'] as String?,
       confidence: (json['confidence'] as num?)?.toDouble(),
       highlights: (json['highlights'] as List<dynamic>?)
@@ -73,6 +88,7 @@ Map<String, dynamic> _$$IdentifiedFoodImplToJson(
       'name': instance.name,
       'calories': instance.calories,
       'macros': instance.macros,
+      'portionSize': instance.portionSize,
       'thumbnailUrl': instance.thumbnailUrl,
       'confidence': instance.confidence,
       'highlights': instance.highlights,
@@ -93,6 +109,12 @@ _$MealAnalysisImpl _$$MealAnalysisImplFromJson(Map<String, dynamic> json) =>
       qualitativeFeedback: json['qualitativeFeedback'] as String,
       warnings:
           (json['warnings'] as List<dynamic>).map((e) => e as String).toList(),
+      mealTag: json['mealTag'] as String?,
+      ingredients: (json['ingredients'] as List<dynamic>?)
+              ?.map(
+                  (e) => IngredientPortion.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$MealAnalysisImplToJson(_$MealAnalysisImpl instance) =>
@@ -107,6 +129,8 @@ Map<String, dynamic> _$$MealAnalysisImplToJson(_$MealAnalysisImpl instance) =>
       'macros': instance.macros,
       'qualitativeFeedback': instance.qualitativeFeedback,
       'warnings': instance.warnings,
+      'mealTag': instance.mealTag,
+      'ingredients': instance.ingredients,
     };
 
 const _$ConfidenceEnumMap = {

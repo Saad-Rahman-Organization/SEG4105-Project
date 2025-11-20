@@ -55,7 +55,7 @@ class HistoryEntryCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${NutriFormatters.shortDay(analysis.timestamp)} · ${NutriFormatters.time(analysis.timestamp)}',
+                      '${NutriFormatters.shortDay(analysis.timestamp)} at ${NutriFormatters.time(analysis.timestamp)}',
                       style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                     ),
                   ],

@@ -9,4 +9,14 @@ class NutriFormatters {
   static String time(DateTime dateTime) => _time.format(dateTime);
 
   static String calories(int calories) => '$calories kcal';
+
+  static String grams(num grams) {
+    final base = grams % 1 == 0 ? grams.toInt().toString() : grams.toStringAsFixed(1);
+    return '$base g';
+  }
+
+  static String gramsShort(num grams) {
+    final base = grams % 1 == 0 ? grams.toInt().toString() : grams.toStringAsFixed(1);
+    return '${base}g';
+  }
 }

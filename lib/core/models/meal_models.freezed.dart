@@ -14,6 +14,175 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+IngredientPortion _$IngredientPortionFromJson(Map<String, dynamic> json) {
+  return _IngredientPortion.fromJson(json);
+}
+
+/// @nodoc
+mixin _$IngredientPortion {
+  String get name => throw _privateConstructorUsedError;
+  String? get portionSize => throw _privateConstructorUsedError;
+
+  /// Serializes this IngredientPortion to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of IngredientPortion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $IngredientPortionCopyWith<IngredientPortion> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $IngredientPortionCopyWith<$Res> {
+  factory $IngredientPortionCopyWith(
+          IngredientPortion value, $Res Function(IngredientPortion) then) =
+      _$IngredientPortionCopyWithImpl<$Res, IngredientPortion>;
+  @useResult
+  $Res call({String name, String? portionSize});
+}
+
+/// @nodoc
+class _$IngredientPortionCopyWithImpl<$Res, $Val extends IngredientPortion>
+    implements $IngredientPortionCopyWith<$Res> {
+  _$IngredientPortionCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of IngredientPortion
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? portionSize = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      portionSize: freezed == portionSize
+          ? _value.portionSize
+          : portionSize // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$IngredientPortionImplCopyWith<$Res>
+    implements $IngredientPortionCopyWith<$Res> {
+  factory _$$IngredientPortionImplCopyWith(_$IngredientPortionImpl value,
+          $Res Function(_$IngredientPortionImpl) then) =
+      __$$IngredientPortionImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String name, String? portionSize});
+}
+
+/// @nodoc
+class __$$IngredientPortionImplCopyWithImpl<$Res>
+    extends _$IngredientPortionCopyWithImpl<$Res, _$IngredientPortionImpl>
+    implements _$$IngredientPortionImplCopyWith<$Res> {
+  __$$IngredientPortionImplCopyWithImpl(_$IngredientPortionImpl _value,
+      $Res Function(_$IngredientPortionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of IngredientPortion
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? portionSize = freezed,
+  }) {
+    return _then(_$IngredientPortionImpl(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      portionSize: freezed == portionSize
+          ? _value.portionSize
+          : portionSize // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$IngredientPortionImpl implements _IngredientPortion {
+  const _$IngredientPortionImpl({required this.name, this.portionSize});
+
+  factory _$IngredientPortionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IngredientPortionImplFromJson(json);
+
+  @override
+  final String name;
+  @override
+  final String? portionSize;
+
+  @override
+  String toString() {
+    return 'IngredientPortion(name: $name, portionSize: $portionSize)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$IngredientPortionImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.portionSize, portionSize) ||
+                other.portionSize == portionSize));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, name, portionSize);
+
+  /// Create a copy of IngredientPortion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$IngredientPortionImplCopyWith<_$IngredientPortionImpl> get copyWith =>
+      __$$IngredientPortionImplCopyWithImpl<_$IngredientPortionImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$IngredientPortionImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _IngredientPortion implements IngredientPortion {
+  const factory _IngredientPortion(
+      {required final String name,
+      final String? portionSize}) = _$IngredientPortionImpl;
+
+  factory _IngredientPortion.fromJson(Map<String, dynamic> json) =
+      _$IngredientPortionImpl.fromJson;
+
+  @override
+  String get name;
+  @override
+  String? get portionSize;
+
+  /// Create a copy of IngredientPortion
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$IngredientPortionImplCopyWith<_$IngredientPortionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 CaptureInfo _$CaptureInfoFromJson(Map<String, dynamic> json) {
   return _CaptureInfo.fromJson(json);
 }
@@ -442,9 +611,9 @@ Macros _$MacrosFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Macros {
-  int get carbs => throw _privateConstructorUsedError;
-  int get protein => throw _privateConstructorUsedError;
-  int get fat => throw _privateConstructorUsedError;
+  double get carbs => throw _privateConstructorUsedError;
+  double get protein => throw _privateConstructorUsedError;
+  double get fat => throw _privateConstructorUsedError;
 
   /// Serializes this Macros to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -460,7 +629,7 @@ abstract class $MacrosCopyWith<$Res> {
   factory $MacrosCopyWith(Macros value, $Res Function(Macros) then) =
       _$MacrosCopyWithImpl<$Res, Macros>;
   @useResult
-  $Res call({int carbs, int protein, int fat});
+  $Res call({double carbs, double protein, double fat});
 }
 
 /// @nodoc
@@ -486,15 +655,15 @@ class _$MacrosCopyWithImpl<$Res, $Val extends Macros>
       carbs: null == carbs
           ? _value.carbs
           : carbs // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       protein: null == protein
           ? _value.protein
           : protein // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       fat: null == fat
           ? _value.fat
           : fat // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
     ) as $Val);
   }
 }
@@ -506,7 +675,7 @@ abstract class _$$MacrosImplCopyWith<$Res> implements $MacrosCopyWith<$Res> {
       __$$MacrosImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int carbs, int protein, int fat});
+  $Res call({double carbs, double protein, double fat});
 }
 
 /// @nodoc
@@ -530,15 +699,15 @@ class __$$MacrosImplCopyWithImpl<$Res>
       carbs: null == carbs
           ? _value.carbs
           : carbs // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       protein: null == protein
           ? _value.protein
           : protein // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       fat: null == fat
           ? _value.fat
           : fat // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
     ));
   }
 }
@@ -554,11 +723,11 @@ class _$MacrosImpl extends _Macros {
       _$$MacrosImplFromJson(json);
 
   @override
-  final int carbs;
+  final double carbs;
   @override
-  final int protein;
+  final double protein;
   @override
-  final int fat;
+  final double fat;
 
   @override
   String toString() {
@@ -597,19 +766,19 @@ class _$MacrosImpl extends _Macros {
 
 abstract class _Macros extends Macros {
   const factory _Macros(
-      {required final int carbs,
-      required final int protein,
-      required final int fat}) = _$MacrosImpl;
+      {required final double carbs,
+      required final double protein,
+      required final double fat}) = _$MacrosImpl;
   const _Macros._() : super._();
 
   factory _Macros.fromJson(Map<String, dynamic> json) = _$MacrosImpl.fromJson;
 
   @override
-  int get carbs;
+  double get carbs;
   @override
-  int get protein;
+  double get protein;
   @override
-  int get fat;
+  double get fat;
 
   /// Create a copy of Macros
   /// with the given fields replaced by the non-null parameter values.
@@ -629,6 +798,7 @@ mixin _$IdentifiedFood {
   String get name => throw _privateConstructorUsedError;
   int get calories => throw _privateConstructorUsedError;
   Macros get macros => throw _privateConstructorUsedError;
+  String? get portionSize => throw _privateConstructorUsedError;
   String? get thumbnailUrl => throw _privateConstructorUsedError;
   double? get confidence => throw _privateConstructorUsedError;
   List<String>? get highlights => throw _privateConstructorUsedError;
@@ -654,6 +824,7 @@ abstract class $IdentifiedFoodCopyWith<$Res> {
       String name,
       int calories,
       Macros macros,
+      String? portionSize,
       String? thumbnailUrl,
       double? confidence,
       List<String>? highlights});
@@ -680,6 +851,7 @@ class _$IdentifiedFoodCopyWithImpl<$Res, $Val extends IdentifiedFood>
     Object? name = null,
     Object? calories = null,
     Object? macros = null,
+    Object? portionSize = freezed,
     Object? thumbnailUrl = freezed,
     Object? confidence = freezed,
     Object? highlights = freezed,
@@ -701,6 +873,10 @@ class _$IdentifiedFoodCopyWithImpl<$Res, $Val extends IdentifiedFood>
           ? _value.macros
           : macros // ignore: cast_nullable_to_non_nullable
               as Macros,
+      portionSize: freezed == portionSize
+          ? _value.portionSize
+          : portionSize // ignore: cast_nullable_to_non_nullable
+              as String?,
       thumbnailUrl: freezed == thumbnailUrl
           ? _value.thumbnailUrl
           : thumbnailUrl // ignore: cast_nullable_to_non_nullable
@@ -740,6 +916,7 @@ abstract class _$$IdentifiedFoodImplCopyWith<$Res>
       String name,
       int calories,
       Macros macros,
+      String? portionSize,
       String? thumbnailUrl,
       double? confidence,
       List<String>? highlights});
@@ -765,6 +942,7 @@ class __$$IdentifiedFoodImplCopyWithImpl<$Res>
     Object? name = null,
     Object? calories = null,
     Object? macros = null,
+    Object? portionSize = freezed,
     Object? thumbnailUrl = freezed,
     Object? confidence = freezed,
     Object? highlights = freezed,
@@ -786,6 +964,10 @@ class __$$IdentifiedFoodImplCopyWithImpl<$Res>
           ? _value.macros
           : macros // ignore: cast_nullable_to_non_nullable
               as Macros,
+      portionSize: freezed == portionSize
+          ? _value.portionSize
+          : portionSize // ignore: cast_nullable_to_non_nullable
+              as String?,
       thumbnailUrl: freezed == thumbnailUrl
           ? _value.thumbnailUrl
           : thumbnailUrl // ignore: cast_nullable_to_non_nullable
@@ -810,6 +992,7 @@ class _$IdentifiedFoodImpl implements _IdentifiedFood {
       required this.name,
       required this.calories,
       required this.macros,
+      this.portionSize,
       this.thumbnailUrl,
       this.confidence,
       final List<String>? highlights})
@@ -827,6 +1010,8 @@ class _$IdentifiedFoodImpl implements _IdentifiedFood {
   @override
   final Macros macros;
   @override
+  final String? portionSize;
+  @override
   final String? thumbnailUrl;
   @override
   final double? confidence;
@@ -842,7 +1027,7 @@ class _$IdentifiedFoodImpl implements _IdentifiedFood {
 
   @override
   String toString() {
-    return 'IdentifiedFood(id: $id, name: $name, calories: $calories, macros: $macros, thumbnailUrl: $thumbnailUrl, confidence: $confidence, highlights: $highlights)';
+    return 'IdentifiedFood(id: $id, name: $name, calories: $calories, macros: $macros, portionSize: $portionSize, thumbnailUrl: $thumbnailUrl, confidence: $confidence, highlights: $highlights)';
   }
 
   @override
@@ -855,6 +1040,8 @@ class _$IdentifiedFoodImpl implements _IdentifiedFood {
             (identical(other.calories, calories) ||
                 other.calories == calories) &&
             (identical(other.macros, macros) || other.macros == macros) &&
+            (identical(other.portionSize, portionSize) ||
+                other.portionSize == portionSize) &&
             (identical(other.thumbnailUrl, thumbnailUrl) ||
                 other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.confidence, confidence) ||
@@ -871,6 +1058,7 @@ class _$IdentifiedFoodImpl implements _IdentifiedFood {
       name,
       calories,
       macros,
+      portionSize,
       thumbnailUrl,
       confidence,
       const DeepCollectionEquality().hash(_highlights));
@@ -898,6 +1086,7 @@ abstract class _IdentifiedFood implements IdentifiedFood {
       required final String name,
       required final int calories,
       required final Macros macros,
+      final String? portionSize,
       final String? thumbnailUrl,
       final double? confidence,
       final List<String>? highlights}) = _$IdentifiedFoodImpl;
@@ -913,6 +1102,8 @@ abstract class _IdentifiedFood implements IdentifiedFood {
   int get calories;
   @override
   Macros get macros;
+  @override
+  String? get portionSize;
   @override
   String? get thumbnailUrl;
   @override
@@ -945,6 +1136,8 @@ mixin _$MealAnalysis {
   Macros get macros => throw _privateConstructorUsedError;
   String get qualitativeFeedback => throw _privateConstructorUsedError;
   List<String> get warnings => throw _privateConstructorUsedError;
+  String? get mealTag => throw _privateConstructorUsedError;
+  List<IngredientPortion> get ingredients => throw _privateConstructorUsedError;
 
   /// Serializes this MealAnalysis to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -972,7 +1165,9 @@ abstract class $MealAnalysisCopyWith<$Res> {
       List<IdentifiedFood> identifiedFoods,
       Macros macros,
       String qualitativeFeedback,
-      List<String> warnings});
+      List<String> warnings,
+      String? mealTag,
+      List<IngredientPortion> ingredients});
 
   $MacrosCopyWith<$Res> get macros;
 }
@@ -1002,6 +1197,8 @@ class _$MealAnalysisCopyWithImpl<$Res, $Val extends MealAnalysis>
     Object? macros = null,
     Object? qualitativeFeedback = null,
     Object? warnings = null,
+    Object? mealTag = freezed,
+    Object? ingredients = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1044,6 +1241,14 @@ class _$MealAnalysisCopyWithImpl<$Res, $Val extends MealAnalysis>
           ? _value.warnings
           : warnings // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      mealTag: freezed == mealTag
+          ? _value.mealTag
+          : mealTag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ingredients: null == ingredients
+          ? _value.ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as List<IngredientPortion>,
     ) as $Val);
   }
 
@@ -1076,7 +1281,9 @@ abstract class _$$MealAnalysisImplCopyWith<$Res>
       List<IdentifiedFood> identifiedFoods,
       Macros macros,
       String qualitativeFeedback,
-      List<String> warnings});
+      List<String> warnings,
+      String? mealTag,
+      List<IngredientPortion> ingredients});
 
   @override
   $MacrosCopyWith<$Res> get macros;
@@ -1105,6 +1312,8 @@ class __$$MealAnalysisImplCopyWithImpl<$Res>
     Object? macros = null,
     Object? qualitativeFeedback = null,
     Object? warnings = null,
+    Object? mealTag = freezed,
+    Object? ingredients = null,
   }) {
     return _then(_$MealAnalysisImpl(
       id: null == id
@@ -1147,6 +1356,14 @@ class __$$MealAnalysisImplCopyWithImpl<$Res>
           ? _value._warnings
           : warnings // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      mealTag: freezed == mealTag
+          ? _value.mealTag
+          : mealTag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ingredients: null == ingredients
+          ? _value._ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as List<IngredientPortion>,
     ));
   }
 }
@@ -1164,9 +1381,12 @@ class _$MealAnalysisImpl implements _MealAnalysis {
       required final List<IdentifiedFood> identifiedFoods,
       required this.macros,
       required this.qualitativeFeedback,
-      required final List<String> warnings})
+      required final List<String> warnings,
+      this.mealTag,
+      final List<IngredientPortion> ingredients = const []})
       : _identifiedFoods = identifiedFoods,
-        _warnings = warnings;
+        _warnings = warnings,
+        _ingredients = ingredients;
 
   factory _$MealAnalysisImpl.fromJson(Map<String, dynamic> json) =>
       _$$MealAnalysisImplFromJson(json);
@@ -1204,8 +1424,19 @@ class _$MealAnalysisImpl implements _MealAnalysis {
   }
 
   @override
+  final String? mealTag;
+  final List<IngredientPortion> _ingredients;
+  @override
+  @JsonKey()
+  List<IngredientPortion> get ingredients {
+    if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_ingredients);
+  }
+
+  @override
   String toString() {
-    return 'MealAnalysis(id: $id, localId: $localId, mealTitle: $mealTitle, totalCalories: $totalCalories, confidence: $confidence, timestamp: $timestamp, identifiedFoods: $identifiedFoods, macros: $macros, qualitativeFeedback: $qualitativeFeedback, warnings: $warnings)';
+    return 'MealAnalysis(id: $id, localId: $localId, mealTitle: $mealTitle, totalCalories: $totalCalories, confidence: $confidence, timestamp: $timestamp, identifiedFoods: $identifiedFoods, macros: $macros, qualitativeFeedback: $qualitativeFeedback, warnings: $warnings, mealTag: $mealTag, ingredients: $ingredients)';
   }
 
   @override
@@ -1228,7 +1459,10 @@ class _$MealAnalysisImpl implements _MealAnalysis {
             (identical(other.macros, macros) || other.macros == macros) &&
             (identical(other.qualitativeFeedback, qualitativeFeedback) ||
                 other.qualitativeFeedback == qualitativeFeedback) &&
-            const DeepCollectionEquality().equals(other._warnings, _warnings));
+            const DeepCollectionEquality().equals(other._warnings, _warnings) &&
+            (identical(other.mealTag, mealTag) || other.mealTag == mealTag) &&
+            const DeepCollectionEquality()
+                .equals(other._ingredients, _ingredients));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1244,7 +1478,9 @@ class _$MealAnalysisImpl implements _MealAnalysis {
       const DeepCollectionEquality().hash(_identifiedFoods),
       macros,
       qualitativeFeedback,
-      const DeepCollectionEquality().hash(_warnings));
+      const DeepCollectionEquality().hash(_warnings),
+      mealTag,
+      const DeepCollectionEquality().hash(_ingredients));
 
   /// Create a copy of MealAnalysis
   /// with the given fields replaced by the non-null parameter values.
@@ -1273,7 +1509,9 @@ abstract class _MealAnalysis implements MealAnalysis {
       required final List<IdentifiedFood> identifiedFoods,
       required final Macros macros,
       required final String qualitativeFeedback,
-      required final List<String> warnings}) = _$MealAnalysisImpl;
+      required final List<String> warnings,
+      final String? mealTag,
+      final List<IngredientPortion> ingredients}) = _$MealAnalysisImpl;
 
   factory _MealAnalysis.fromJson(Map<String, dynamic> json) =
       _$MealAnalysisImpl.fromJson;
@@ -1298,6 +1536,10 @@ abstract class _MealAnalysis implements MealAnalysis {
   String get qualitativeFeedback;
   @override
   List<String> get warnings;
+  @override
+  String? get mealTag;
+  @override
+  List<IngredientPortion> get ingredients;
 
   /// Create a copy of MealAnalysis
   /// with the given fields replaced by the non-null parameter values.
