@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/legacy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/user_profile.dart';
@@ -10,30 +13,39 @@ abstract class ProfileRepository {
   Future<void> clear();
 }
 
-class InMemoryProfileRepository implements ProfileRepository {
-  UserProfile? _profile;
+class LocalProfileRepository implements ProfileRepository {
+  LocalProfileRepository(this._prefs);
+
+  static const _profileKey = 'profile_v1';
+  final SharedPreferences _prefs;
 
   @override
   Future<UserProfile?> fetchProfile() async {
-    await Future<void>.delayed(const Duration(milliseconds: 250));
-    return _profile;
+    final stored = _prefs.getString(_profileKey);
+    if (stored == null) return null;
+    try {
+      final map = jsonDecode(stored) as Map<String, dynamic>;
+      return UserProfile.fromJson(map);
+    } catch (_) {
+      // If parsing fails, clear corrupt data to avoid blocking onboarding.
+      await clear();
+      return null;
+    }
   }
 
   @override
   Future<void> saveProfile(UserProfile profile) async {
-    await Future<void>.delayed(const Duration(milliseconds: 180));
-    _profile = profile;
+    await _prefs.setString(_profileKey, jsonEncode(profile.toJson()));
   }
 
   @override
   Future<void> clear() async {
-    await Future<void>.delayed(const Duration(milliseconds: 120));
-    _profile = null;
+    await _prefs.remove(_profileKey);
   }
 }
 
 final profileRepositoryProvider = Provider<ProfileRepository>(
-  (ref) => InMemoryProfileRepository(),
+  (ref) => throw UnimplementedError('ProfileRepository provider not initialized'),
 );
 
 class ProfileController extends StateNotifier<UserProfile?> {

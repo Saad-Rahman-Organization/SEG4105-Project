@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/legacy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/meal_models.dart';
-import '../utils/mock_data.dart';
 
 abstract class HistoryRepository {
   Future<MealAnalysis?> getScan(String id);
@@ -19,51 +19,92 @@ abstract class HistoryRepository {
   Future<String> exportHistory();
 }
 
-class InMemoryHistoryRepository implements HistoryRepository {
-  InMemoryHistoryRepository();
+class LocalHistoryRepository implements HistoryRepository {
+  LocalHistoryRepository._(this._prefs);
+
+  factory LocalHistoryRepository(SharedPreferences prefs) {
+    final repo = LocalHistoryRepository._(prefs);
+    repo._hydrated = repo._hydrate();
+    return repo;
+  }
+
+  static const _scansKey = 'history_scans_v1';
+  final SharedPreferences _prefs;
+  late final Future<void> _hydrated;
 
   final Map<String, MealAnalysis> _scans = {};
   final List<String> _index = [];
 
+  Future<void> _ensureReady() => _hydrated;
+
+  Future<void> _hydrate() async {
+    final stored = _prefs.getString(_scansKey);
+    if (stored == null) return;
+    try {
+      final decoded = jsonDecode(stored) as List<dynamic>;
+      final entries = decoded.cast<Map<String, dynamic>>().map(MealAnalysis.fromJson).toList();
+      _scans.clear();
+      _index.clear();
+      for (final entry in entries) {
+        _scans[entry.id] = entry;
+        _index.add(entry.id);
+      }
+    } catch (_) {
+      await _prefs.remove(_scansKey);
+      _scans.clear();
+      _index.clear();
+    }
+  }
+
+  Future<void> _persist() async {
+    final payload = _index.map((id) => _scans[id]!).map((e) => e.toJson()).toList();
+    await _prefs.setString(_scansKey, jsonEncode(payload));
+  }
+
   @override
   Future<void> addScan(MealAnalysis analysis) async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
+    await _ensureReady();
     _scans[analysis.id] = analysis;
     _index.remove(analysis.id);
     _index.insert(0, analysis.id);
+    await _persist();
   }
 
   @override
   Future<void> clearHistory() async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    await _ensureReady();
     _scans.clear();
     _index.clear();
+    await _prefs.remove(_scansKey);
   }
 
   @override
   Future<void> updateScan(MealAnalysis analysis) async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    await _ensureReady();
     _scans[analysis.id] = analysis;
     _index.remove(analysis.id);
     _index.insert(0, analysis.id);
+    await _persist();
   }
 
   @override
   Future<void> deleteScan(String id) async {
-    await Future<void>.delayed(const Duration(milliseconds: 120));
+    await _ensureReady();
     _scans.remove(id);
     _index.remove(id);
+    await _persist();
   }
 
   @override
   Future<String> exportHistory() async {
+    await _ensureReady();
     final payload = _index.map((id) => _scans[id]!).toList();
     return jsonEncode(payload.map((e) => e.toJson()).toList());
   }
 
   @override
   Future<List<String>> getScanIndex({required int limit, required int offset}) async {
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    await _ensureReady();
     final end = (offset + limit).clamp(0, _index.length);
     if (offset >= end) return [];
     return _index.sublist(offset, end);
@@ -71,12 +112,13 @@ class InMemoryHistoryRepository implements HistoryRepository {
 
   @override
   Future<MealAnalysis?> getScan(String id) async {
-    await Future<void>.delayed(const Duration(milliseconds: 120));
+    await _ensureReady();
     return _scans[id];
   }
 
   @override
   Future<void> pruneScans({required int olderThanDays}) async {
+    await _ensureReady();
     final threshold = DateTime.now().subtract(Duration(days: olderThanDays));
     final idsToRemove = _scans.values
         .where((scan) => scan.timestamp.isBefore(threshold))
@@ -195,7 +237,7 @@ class HistoryController extends StateNotifier<HistoryState> {
 }
 
 final historyRepositoryProvider = Provider<HistoryRepository>(
-  (ref) => InMemoryHistoryRepository(),
+  (ref) => throw UnimplementedError('HistoryRepository provider not initialized'),
 );
 
 final historyControllerProvider =

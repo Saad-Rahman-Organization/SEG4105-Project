@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/legacy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/app_preferences.dart';
 
@@ -9,27 +12,34 @@ abstract class PreferencesRepository {
   Future<void> save(AppPreferences preferences);
 }
 
-class InMemoryPreferencesRepository implements PreferencesRepository {
-  AppPreferences _cache = const AppPreferences(
-    theme: AppTheme.system,
-    units: UnitsPreference.metric,
-  );
+class LocalPreferencesRepository implements PreferencesRepository {
+  LocalPreferencesRepository(this._prefs);
+
+  static const _prefsKey = 'app_preferences_v1';
+  final SharedPreferences _prefs;
 
   @override
   Future<AppPreferences> load() async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    return _cache;
+    final stored = _prefs.getString(_prefsKey);
+    if (stored == null) {
+      return const AppPreferences(theme: AppTheme.system, units: UnitsPreference.metric);
+    }
+    try {
+      return AppPreferences.fromJson(jsonDecode(stored) as Map<String, dynamic>);
+    } catch (_) {
+      await _prefs.remove(_prefsKey);
+      return const AppPreferences(theme: AppTheme.system, units: UnitsPreference.metric);
+    }
   }
 
   @override
   Future<void> save(AppPreferences preferences) async {
-    await Future<void>.delayed(const Duration(milliseconds: 120));
-    _cache = preferences;
+    await _prefs.setString(_prefsKey, jsonEncode(preferences.toJson()));
   }
 }
 
 final preferencesRepositoryProvider = Provider<PreferencesRepository>(
-  (ref) => InMemoryPreferencesRepository(),
+  (ref) => throw UnimplementedError('PreferencesRepository provider not initialized'),
 );
 
 class PreferencesController extends StateNotifier<AppPreferences> {
