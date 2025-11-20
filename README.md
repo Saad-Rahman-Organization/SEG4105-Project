@@ -1,18 +1,22 @@
-  1. Install required Android platform/NDK (only once):
+# NutriSnap Flutter Application
 
-  & "$HOME/AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager.bat" "platforms;android-
-  36" "ndk;27.0.12077973"
+## How to Run
 
-  2. Fetch deps and regenerate code:
+1.  Install required Android platform/NDK (only once):
 
-  flutter pub get
-  dart run build_runner build --delete-conflicting-outputs
+    & "$HOME/AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager.bat" "platforms;android-36" "ndk;27.0.12077973"
 
-  3. Run on your emulator/device:
+2.  Fetch deps and regenerate code:
 
-  flutter run -d emulator   # or your device id
+    flutter pub get
+    dart run build_runner build --delete-conflicting-outputs
 
-  Notes: The app now builds and runs; you may see a quick RenderFlex overflow message in the results
-  screen on very small widths—adjust padding if needed.
+3.  Run on your emulator/device:
 
-  codex resume 019aa22d-679f-75d3-b814-ede136fa82b5
+    flutter run -d emulator   # or your device id
+
+Notes: The app now builds and runs; you may see a quick RenderFlex overflow message in the results screen on very small widths—adjust padding if needed.
+
+# Backend
+
+SAAD RAHMAN WARSI 300249227

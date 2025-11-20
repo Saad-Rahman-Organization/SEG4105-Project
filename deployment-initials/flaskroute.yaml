@@ -1,0 +1,9 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+ name: flask-route
+spec:
+ wildcardPolicy: None
+ to:
+   kind: Service
+   name: flask-service
