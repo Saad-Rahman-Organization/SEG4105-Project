@@ -115,6 +115,7 @@ _$MealAnalysisImpl _$$MealAnalysisImplFromJson(Map<String, dynamic> json) =>
                   (e) => IngredientPortion.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      totalFiber: (json['totalFiber'] as num?)?.toDouble() ?? 0,
     );
 
 Map<String, dynamic> _$$MealAnalysisImplToJson(_$MealAnalysisImpl instance) =>
@@ -131,6 +132,7 @@ Map<String, dynamic> _$$MealAnalysisImplToJson(_$MealAnalysisImpl instance) =>
       'warnings': instance.warnings,
       'mealTag': instance.mealTag,
       'ingredients': instance.ingredients,
+      'totalFiber': instance.totalFiber,
     };
 
 const _$ConfidenceEnumMap = {

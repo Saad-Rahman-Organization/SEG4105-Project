@@ -25,7 +25,7 @@ class MacroDonutChart extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 220,
+          height: 240,
           child: PieChart(
             PieChartData(
               sectionsSpace: 4,
@@ -35,7 +35,7 @@ class MacroDonutChart extends StatelessWidget {
                     (slice) => PieChartSectionData(
                       value: slice.value,
                       color: slice.color,
-                      radius: 70,
+                      radius: 72,
                       title: NutriFormatters.gramsShort(slice.value),
                       titleStyle: theme.textTheme.labelMedium?.copyWith(color: Colors.white),
                     ),
@@ -44,17 +44,19 @@ class MacroDonutChart extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Wrap(
-          spacing: 16,
+          alignment: WrapAlignment.center,
+          spacing: 18,
+          runSpacing: 8,
           children: sections
               .map(
                 (slice) => Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: 10,
-                      height: 10,
+                      width: 12,
+                      height: 12,
                       decoration: BoxDecoration(color: slice.color, shape: BoxShape.circle),
                     ),
                     const SizedBox(width: 6),

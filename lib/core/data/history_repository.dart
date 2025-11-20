@@ -12,6 +12,7 @@ abstract class HistoryRepository {
   Future<MealAnalysis?> getScan(String id);
   Future<List<String>> getScanIndex({required int limit, required int offset});
   Future<void> addScan(MealAnalysis analysis);
+  Future<void> updateScan(MealAnalysis analysis);
   Future<void> deleteScan(String id);
   Future<void> clearHistory();
   Future<void> pruneScans({required int olderThanDays});
@@ -43,6 +44,14 @@ class InMemoryHistoryRepository implements HistoryRepository {
     await Future<void>.delayed(const Duration(milliseconds: 150));
     _scans.clear();
     _index.clear();
+  }
+
+  @override
+  Future<void> updateScan(MealAnalysis analysis) async {
+    await Future<void>.delayed(const Duration(milliseconds: 150));
+    _scans[analysis.id] = analysis;
+    _index.remove(analysis.id);
+    _index.insert(0, analysis.id);
   }
 
   @override
@@ -172,6 +181,11 @@ class HistoryController extends StateNotifier<HistoryState> {
 
   Future<void> addAnalysis(MealAnalysis analysis) async {
     await _repository.addScan(analysis);
+    await refresh();
+  }
+
+  Future<void> updateAnalysis(MealAnalysis analysis) async {
+    await _repository.updateScan(analysis);
     await refresh();
   }
 

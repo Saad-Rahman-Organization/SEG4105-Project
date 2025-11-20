@@ -93,6 +93,7 @@ class MealAnalysisService {
       protein: _parseGrams(totalMacrosData['protein']),
       fat: _parseGrams(totalMacrosData['fat']),
     );
+    final totalFiber = _parseGrams(totalMacrosData['fiber']);
 
     final mealTag = (data['meal_tag'] as String?)?.trim();
     final notes = (data['notes'] as String?)?.trim();
@@ -110,6 +111,7 @@ class MealAnalysisService {
       qualitativeFeedback: notes?.isNotEmpty == true ? notes! : 'No comments returned for this scan.',
       warnings: const [],
       ingredients: ingredients,
+      totalFiber: totalFiber,
     );
   }
 

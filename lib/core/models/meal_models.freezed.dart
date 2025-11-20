@@ -1138,6 +1138,7 @@ mixin _$MealAnalysis {
   List<String> get warnings => throw _privateConstructorUsedError;
   String? get mealTag => throw _privateConstructorUsedError;
   List<IngredientPortion> get ingredients => throw _privateConstructorUsedError;
+  double get totalFiber => throw _privateConstructorUsedError;
 
   /// Serializes this MealAnalysis to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1167,7 +1168,8 @@ abstract class $MealAnalysisCopyWith<$Res> {
       String qualitativeFeedback,
       List<String> warnings,
       String? mealTag,
-      List<IngredientPortion> ingredients});
+      List<IngredientPortion> ingredients,
+      double totalFiber});
 
   $MacrosCopyWith<$Res> get macros;
 }
@@ -1199,6 +1201,7 @@ class _$MealAnalysisCopyWithImpl<$Res, $Val extends MealAnalysis>
     Object? warnings = null,
     Object? mealTag = freezed,
     Object? ingredients = null,
+    Object? totalFiber = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1249,6 +1252,10 @@ class _$MealAnalysisCopyWithImpl<$Res, $Val extends MealAnalysis>
           ? _value.ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<IngredientPortion>,
+      totalFiber: null == totalFiber
+          ? _value.totalFiber
+          : totalFiber // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 
@@ -1283,7 +1290,8 @@ abstract class _$$MealAnalysisImplCopyWith<$Res>
       String qualitativeFeedback,
       List<String> warnings,
       String? mealTag,
-      List<IngredientPortion> ingredients});
+      List<IngredientPortion> ingredients,
+      double totalFiber});
 
   @override
   $MacrosCopyWith<$Res> get macros;
@@ -1314,6 +1322,7 @@ class __$$MealAnalysisImplCopyWithImpl<$Res>
     Object? warnings = null,
     Object? mealTag = freezed,
     Object? ingredients = null,
+    Object? totalFiber = null,
   }) {
     return _then(_$MealAnalysisImpl(
       id: null == id
@@ -1364,6 +1373,10 @@ class __$$MealAnalysisImplCopyWithImpl<$Res>
           ? _value._ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<IngredientPortion>,
+      totalFiber: null == totalFiber
+          ? _value.totalFiber
+          : totalFiber // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -1383,7 +1396,8 @@ class _$MealAnalysisImpl implements _MealAnalysis {
       required this.qualitativeFeedback,
       required final List<String> warnings,
       this.mealTag,
-      final List<IngredientPortion> ingredients = const []})
+      final List<IngredientPortion> ingredients = const [],
+      this.totalFiber = 0})
       : _identifiedFoods = identifiedFoods,
         _warnings = warnings,
         _ingredients = ingredients;
@@ -1435,8 +1449,12 @@ class _$MealAnalysisImpl implements _MealAnalysis {
   }
 
   @override
+  @JsonKey()
+  final double totalFiber;
+
+  @override
   String toString() {
-    return 'MealAnalysis(id: $id, localId: $localId, mealTitle: $mealTitle, totalCalories: $totalCalories, confidence: $confidence, timestamp: $timestamp, identifiedFoods: $identifiedFoods, macros: $macros, qualitativeFeedback: $qualitativeFeedback, warnings: $warnings, mealTag: $mealTag, ingredients: $ingredients)';
+    return 'MealAnalysis(id: $id, localId: $localId, mealTitle: $mealTitle, totalCalories: $totalCalories, confidence: $confidence, timestamp: $timestamp, identifiedFoods: $identifiedFoods, macros: $macros, qualitativeFeedback: $qualitativeFeedback, warnings: $warnings, mealTag: $mealTag, ingredients: $ingredients, totalFiber: $totalFiber)';
   }
 
   @override
@@ -1462,7 +1480,9 @@ class _$MealAnalysisImpl implements _MealAnalysis {
             const DeepCollectionEquality().equals(other._warnings, _warnings) &&
             (identical(other.mealTag, mealTag) || other.mealTag == mealTag) &&
             const DeepCollectionEquality()
-                .equals(other._ingredients, _ingredients));
+                .equals(other._ingredients, _ingredients) &&
+            (identical(other.totalFiber, totalFiber) ||
+                other.totalFiber == totalFiber));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1480,7 +1500,8 @@ class _$MealAnalysisImpl implements _MealAnalysis {
       qualitativeFeedback,
       const DeepCollectionEquality().hash(_warnings),
       mealTag,
-      const DeepCollectionEquality().hash(_ingredients));
+      const DeepCollectionEquality().hash(_ingredients),
+      totalFiber);
 
   /// Create a copy of MealAnalysis
   /// with the given fields replaced by the non-null parameter values.
@@ -1511,7 +1532,8 @@ abstract class _MealAnalysis implements MealAnalysis {
       required final String qualitativeFeedback,
       required final List<String> warnings,
       final String? mealTag,
-      final List<IngredientPortion> ingredients}) = _$MealAnalysisImpl;
+      final List<IngredientPortion> ingredients,
+      final double totalFiber}) = _$MealAnalysisImpl;
 
   factory _MealAnalysis.fromJson(Map<String, dynamic> json) =
       _$MealAnalysisImpl.fromJson;
@@ -1540,6 +1562,8 @@ abstract class _MealAnalysis implements MealAnalysis {
   String? get mealTag;
   @override
   List<IngredientPortion> get ingredients;
+  @override
+  double get totalFiber;
 
   /// Create a copy of MealAnalysis
   /// with the given fields replaced by the non-null parameter values.

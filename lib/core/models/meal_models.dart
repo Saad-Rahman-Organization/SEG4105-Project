@@ -86,6 +86,7 @@ class MealAnalysis with _$MealAnalysis {
     required List<String> warnings,
     String? mealTag,
     @Default([]) List<IngredientPortion> ingredients,
+    @Default(0) double totalFiber,
   }) = _MealAnalysis;
 
   factory MealAnalysis.fromJson(Map<String, dynamic> json) => _$MealAnalysisFromJson(json);
