@@ -20,13 +20,7 @@ abstract class HistoryRepository {
 }
 
 class InMemoryHistoryRepository implements HistoryRepository {
-  InMemoryHistoryRepository() {
-    final samples = MockData.sampleAnalyses;
-    for (final analysis in samples) {
-      _scans[analysis.id] = analysis;
-      _index.insert(0, analysis.id);
-    }
-  }
+  InMemoryHistoryRepository();
 
   final Map<String, MealAnalysis> _scans = {};
   final List<String> _index = [];
@@ -117,8 +111,12 @@ class HistoryState {
 
   List<MealAnalysis> get filteredEntries {
     return entries.where((entry) {
-      final matchesQuery = query.isEmpty ||
-          entry.mealTitle.toLowerCase().contains(query.toLowerCase());
+      final q = query.trim().toLowerCase();
+      final matchesQuery = q.isEmpty ||
+          entry.mealTitle.toLowerCase().contains(q) ||
+          (entry.mealTag?.toLowerCase().contains(q) ?? false) ||
+          entry.identifiedFoods.any((food) => food.name.toLowerCase().contains(q)) ||
+          entry.ingredients.any((ing) => ing.name.toLowerCase().contains(q));
       final withinRange = dateRange == null ||
           (!entry.timestamp.isBefore(dateRange!.start) &&
               !entry.timestamp.isAfter(dateRange!.end));
