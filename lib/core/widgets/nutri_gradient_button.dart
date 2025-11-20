@@ -36,9 +36,9 @@ class NutriGradientButton extends HookConsumerWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.35),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
+              color: theme.colorScheme.primary.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.18 : 0.28),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
           ],
         ),

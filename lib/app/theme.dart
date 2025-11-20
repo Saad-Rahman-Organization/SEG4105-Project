@@ -4,35 +4,37 @@ import 'package:google_fonts/google_fonts.dart';
 
 class NutriTheme {
   static final ColorScheme lightScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF5FB662),
+    seedColor: const Color(0xFF63B677),
     brightness: Brightness.light,
   ).copyWith(
-    primary: const Color(0xFF5FB662),
-    onPrimary: const Color(0xFF0F1A0F),
-    secondary: const Color(0xFFD4F06A),
-    onSecondary: const Color(0xFF1A1F06),
-    surface: const Color(0xFFF8F6F1),
-    onSurface: const Color(0xFF13140F),
-    surfaceContainerHighest: const Color(0xFFEAE8E1),
-    outline: const Color(0xFFEAE8E1),
-    error: const Color(0xFFD9534F),
-    surfaceTint: const Color(0xFF5FB662),
+    primary: const Color(0xFF63B677),
+    onPrimary: const Color(0xFF0D1A11),
+    secondary: const Color(0xFFF0D18A),
+    onSecondary: const Color(0xFF23180B),
+    surface: const Color(0xFFFAF7F1),
+    onSurface: const Color(0xFF141413),
+    surfaceContainerHighest: const Color(0xFFEDE6DB),
+    outline: const Color(0xFFD8D1C6),
+    outlineVariant: const Color(0xFFE7E0D6),
+    error: const Color(0xFFDB6765),
+    surfaceTint: const Color(0xFF63B677),
   );
 
   static final ColorScheme darkScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF6BCB70),
+    seedColor: const Color(0xFF9BBF7A),
     brightness: Brightness.dark,
   ).copyWith(
-    primary: const Color(0xFF6BCB70),
-    onPrimary: const Color(0xFFF5FFF5),
-    secondary: const Color(0xFFC9E85A),
-    onSecondary: const Color(0xFF1A1F06),
-    surface: const Color(0xFF121212),
-    onSurface: const Color(0xFFE6E2D9),
-    surfaceContainerHighest: const Color(0xFF3A3A3A),
-    outline: const Color(0xFF4F4F4F),
-    error: const Color(0xFFE57373),
-    surfaceTint: const Color(0xFF6BCB70),
+    primary: const Color(0xFF9BBF7A),
+    onPrimary: const Color(0xFF0E1209),
+    secondary: const Color(0xFFCBB07A),
+    onSecondary: const Color(0xFF1B1207),
+    surface: const Color(0xFF16110D),
+    onSurface: const Color(0xFFF1E6D9),
+    surfaceContainerHighest: const Color(0xFF241D17),
+    outline: const Color(0xFF3D342B),
+    outlineVariant: const Color(0xFF473C32),
+    error: const Color(0xFFE89988),
+    surfaceTint: const Color(0xFF9BBF7A),
   );
 
   static ThemeData get light => _buildTheme(lightScheme);
@@ -72,6 +74,9 @@ class NutriTheme {
         fontWeight: FontWeight.w500,
       ),
       bodySmall: baseTextTheme.bodySmall?.copyWith(fontSize: 12),
+    ).apply(
+      bodyColor: scheme.onSurface,
+      displayColor: scheme.onSurface,
     );
 
     return ThemeData(
@@ -79,6 +84,8 @@ class NutriTheme {
       colorScheme: scheme,
       textTheme: textTheme,
       scaffoldBackgroundColor: scheme.surface,
+      splashColor: scheme.primary.withValues(alpha: 0.08),
+      highlightColor: scheme.primary.withValues(alpha: 0.06),
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         elevation: 0,
@@ -86,9 +93,27 @@ class NutriTheme {
         foregroundColor: scheme.onSurface,
       ),
       cardTheme: CardTheme(
-        color: scheme.surface,
+        color: scheme.surfaceContainerHighest,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        surfaceTintColor: Colors.transparent,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: scheme.outline.withValues(alpha: 0.7)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: scheme.outline.withValues(alpha: 0.5)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: scheme.primary.withValues(alpha: 0.8), width: 1.4),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: scheme.primary,
@@ -105,6 +130,12 @@ class NutriTheme {
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
+      ),
+      dividerColor: scheme.outline.withValues(alpha: 0.4),
+      listTileTheme: ListTileThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        tileColor: scheme.surfaceContainerHighest,
+        iconColor: scheme.onSurfaceVariant,
       ),
     );
   }
