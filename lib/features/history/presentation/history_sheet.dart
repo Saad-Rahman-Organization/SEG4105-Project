@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -89,176 +91,211 @@ class HomeHistorySheet extends HookConsumerWidget {
     final viewInsets = MediaQuery.viewInsetsOf(context);
     final listPadding = EdgeInsets.fromLTRB(16, 8, 16, viewInsets.bottom + 32);
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: DraggableScrollableSheet(
-        controller: controller,
-        initialChildSize: initialSheetSize,
-        minChildSize: minSheetSize,
-        maxChildSize: maxSheetSize,
-        snap: true,
-        snapSizes: const [initialSheetSize, midSheetSize, maxSheetSize],
-        builder: (context, scrollController) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              void handleDragUpdate(DragUpdateDetails details) {
-                final delta = -details.primaryDelta! / constraints.maxHeight;
-                final target = (controller.size + delta).clamp(minSheetSize, maxSheetSize);
-                controller.jumpTo(target);
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: AnimatedBuilder(
+            animation: controller,
+            builder: (context, _) {
+              if (!controller.isAttached) {
+                return const SizedBox.shrink();
               }
-
-              void handleDragEnd(DragEndDetails details) {
-                final sizes = [initialSheetSize, midSheetSize, maxSheetSize];
-                double closest = sizes.first;
-                double minDiff = (controller.size - closest).abs();
-                for (final s in sizes.skip(1)) {
-                  final diff = (controller.size - s).abs();
-                  if (diff < minDiff) {
-                    minDiff = diff;
-                    closest = s;
-                  }
-                }
-                controller.animateTo(
-                  closest,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOutCubic,
-                );
-              }
-
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onVerticalDragUpdate: handleDragUpdate,
-                onVerticalDragEnd: handleDragEnd,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 20,
-                        color: Colors.black.withValues(alpha: 0.08),
-                        offset: const Offset(0, -4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 12),
-                      Container(
-                        height: 5,
-                        width: 52,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.4),
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                focusNode: searchFocusNode,
-                                controller: searchController,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(Icons.search),
-                                  hintText: 'Search meals',
-                                ),
-                                onTap: ensureExpanded,
-                                onChanged: handleSearchChange,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            IconButton(
-                              tooltip: 'Date range',
-                              onPressed: openDatePicker,
-                              icon: const Icon(Icons.filter_alt_outlined),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (filtersActive)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                                searchController.clear();
-                                ref.read(historyControllerProvider.notifier)
-                                  ..updateSearch('')
-                                  ..setDateRange(null);
-                              },
-                              child: const Text('Clear filters'),
-                            ),
-                          ),
-                        ),
-                      Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: ref.read(historyControllerProvider.notifier).refresh,
-                          child: Builder(
-                            builder: (context) {
-                              final entries = historyState.filteredEntries;
-                              if (historyState.isLoading) {
-                                return const Center(child: CircularProgressIndicator());
-                              }
-                              if (entries.isEmpty) {
-                                return ListView(
-                                  controller: scrollController,
-                                  padding: listPadding,
-                                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                                  children: [
-                                    const SizedBox(height: 48),
-                                    Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.primary),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      historyState.entries.isEmpty
-                                          ? 'No meals saved yet'
-                                          : 'No results match your search',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.titleLarge,
-                                    ),
-                                    if (historyState.entries.isEmpty) ...[
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        'Scan a meal to see it here and search later.',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                    const SizedBox(height: 120),
-                                  ],
-                                );
-                              }
-                              return ListView.builder(
-                                controller: scrollController,
-                                padding: listPadding,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                                itemCount: entries.length,
-                                itemBuilder: (context, index) {
-                                  final item = entries[index];
-                                  return HistoryEntryCard(
-                                    analysis: item,
-                                    onTap: () => context.pushNamed('results', pathParameters: {'id': item.id}),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+              final blurProgress = ((controller.size - initialSheetSize) / (maxSheetSize - initialSheetSize))
+                  .clamp(0.0, 1.0);
+              final sigma = lerpDouble(0, 40, blurProgress)!;
+            return IgnorePointer(
+              ignoring: blurProgress == 0,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                  opacity: blurProgress * 0.8,
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+                    child: Container(
+                      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.24 * blurProgress),
+                    ),
                   ),
                 ),
+              ),
+            );
+            },
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: DraggableScrollableSheet(
+            controller: controller,
+            initialChildSize: initialSheetSize,
+            minChildSize: minSheetSize,
+            maxChildSize: maxSheetSize,
+            snap: true,
+            snapSizes: const [initialSheetSize, midSheetSize, maxSheetSize],
+            builder: (context, scrollController) {
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  void handleDragUpdate(DragUpdateDetails details) {
+                    final delta = -details.primaryDelta! / constraints.maxHeight;
+                    final target = (controller.size + delta).clamp(minSheetSize, maxSheetSize);
+                    controller.jumpTo(target);
+                  }
+
+                  void handleDragEnd(DragEndDetails details) {
+                    final sizes = [initialSheetSize, midSheetSize, maxSheetSize];
+                    double closest = sizes.first;
+                    double minDiff = (controller.size - closest).abs();
+                    for (final s in sizes.skip(1)) {
+                      final diff = (controller.size - s).abs();
+                      if (diff < minDiff) {
+                        minDiff = diff;
+                        closest = s;
+                      }
+                    }
+                    controller.animateTo(
+                      closest,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOutCubic,
+                    );
+                  }
+
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onVerticalDragUpdate: handleDragUpdate,
+                    onVerticalDragEnd: handleDragEnd,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 20,
+                            color: Colors.black.withValues(alpha: 0.08),
+                            offset: const Offset(0, -4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 12),
+                          Container(
+                            height: 5,
+                            width: 52,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.4),
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    focusNode: searchFocusNode,
+                                    controller: searchController,
+                                    decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.search),
+                                      hintText: 'Search meals',
+                                    ),
+                                    onTap: ensureExpanded,
+                                    onChanged: handleSearchChange,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                IconButton(
+                                  tooltip: 'Date range',
+                                  onPressed: openDatePicker,
+                                  icon: const Icon(Icons.filter_alt_outlined),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (filtersActive)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    searchController.clear();
+                                    ref.read(historyControllerProvider.notifier)
+                                      ..updateSearch('')
+                                      ..setDateRange(null);
+                                  },
+                                  child: const Text('Clear filters'),
+                                ),
+                              ),
+                            ),
+                          Expanded(
+                            child: RefreshIndicator(
+                              onRefresh: ref.read(historyControllerProvider.notifier).refresh,
+                              child: Builder(
+                                builder: (context) {
+                                  final entries = historyState.filteredEntries;
+                                  if (historyState.isLoading) {
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+                                  if (entries.isEmpty) {
+                                    return ListView(
+                                      controller: scrollController,
+                                      padding: listPadding,
+                                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                                      children: [
+                                        const SizedBox(height: 48),
+                                        Icon(Icons.inbox_outlined,
+                                            size: 64, color: Theme.of(context).colorScheme.primary),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          historyState.entries.isEmpty
+                                              ? 'No meals saved yet'
+                                              : 'No results match your search',
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.titleLarge,
+                                        ),
+                                        if (historyState.entries.isEmpty) ...[
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Scan a meal to see it here and search later.',
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                                ),
+                                          ),
+                                        ],
+                                        const SizedBox(height: 120),
+                                      ],
+                                    );
+                                  }
+                                  return ListView.builder(
+                                    controller: scrollController,
+                                    padding: listPadding,
+                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                                    itemCount: entries.length,
+                                    itemBuilder: (context, index) {
+                                      final item = entries[index];
+                                      return HistoryEntryCard(
+                                        analysis: item,
+                                        onTap: () =>
+                                            context.pushNamed('results', pathParameters: {'id': item.id}),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
