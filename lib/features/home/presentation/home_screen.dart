@@ -86,12 +86,28 @@ class HomeScreen extends HookConsumerWidget {
                           style: theme.textTheme.headlineMedium,
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          'Ready to capture your next meal?',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
+                        Builder(builder: (context) {
+                          final now = DateTime.now();
+                          // If location-based sunrise/sunset is unavailable, fall back to general daytime anchors.
+                          const noonHour = 12;
+                          const sunsetHour = 18;
+                          const sunriseHour = 6; // allow breakfast window to start a bit before midday anchor
+                          final hour = now.hour;
+                          String prompt;
+                          if (hour < noonHour && hour >= sunriseHour) {
+                            prompt = 'Breakfast is the most important meal! \\(^_^)/';
+                          } else if (hour >= noonHour && hour < sunsetHour) {
+                            prompt = 'Perfect time for lunch~ (o^_^o)';
+                          } else {
+                            prompt = 'Seems like it\'s dinner time (¬‿¬)';
+                          }
+                          return Text(
+                            prompt,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          );
+                        }),
                         const SizedBox(height: 24),
                         Center(
                           child: TweenAnimationBuilder<double>(
