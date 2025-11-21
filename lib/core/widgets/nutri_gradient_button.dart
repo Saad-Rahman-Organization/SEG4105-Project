@@ -19,6 +19,9 @@ class NutriGradientButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final basePrimary = isDark ? theme.colorScheme.primaryContainer : theme.colorScheme.primary;
+    final onBasePrimary = isDark ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onPrimary;
     final pressed = useState(false);
 
     return TweenAnimationBuilder<double>(
@@ -29,16 +32,16 @@ class NutriGradientButton extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              theme.colorScheme.primary,
-              theme.colorScheme.primary.withValues(alpha: 0.75),
+              basePrimary.withValues(alpha: isDark ? 0.88 : 1),
+              basePrimary.withValues(alpha: isDark ? 0.72 : 0.75),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.18 : 0.28),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
+              color: basePrimary.withValues(alpha: isDark ? 0.12 : 0.24),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -53,32 +56,32 @@ class NutriGradientButton extends HookConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (icon != null) ...[
-                    Icon(icon, color: theme.colorScheme.onPrimary),
-                    const SizedBox(width: 8),
-                  ],
-                  Text(
-                    label,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
+              children: [
+                if (icon != null) ...[
+                  Icon(icon, color: onBasePrimary),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  label,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: onBasePrimary,
+                    fontWeight: FontWeight.w600,
                   ),
-                  if (isBusy) ...[
-                    const SizedBox(width: 12),
-                    SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          theme.colorScheme.onPrimary,
-                        ),
+                ),
+                if (isBusy) ...[
+                  const SizedBox(width: 12),
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        onBasePrimary,
                       ),
                     ),
-                  ],
+                  ),
                 ],
+              ],
               ),
             ),
           ),

@@ -782,17 +782,37 @@ class _SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surface;
+    final titleColor = Color.alphaBlend(
+      theme.colorScheme.onSurface.withValues(alpha: 0.06),
+      cardColor,
+    );
+    const borderRadius = BorderRadius.all(Radius.circular(18));
+
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 12),
-            child,
-          ],
-        ),
+      shape: const RoundedRectangleBorder(borderRadius: borderRadius),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            decoration: BoxDecoration(
+              color: titleColor,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+            ),
+            child: Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+            child: child,
+          ),
+        ],
       ),
     );
   }
@@ -817,77 +837,73 @@ class _NutritionBreakdownCard extends StatelessWidget {
     final fatCalories = analysis.macros.fat * 9;
     final totalMacroCalories = carbsCalories + proteinCalories + fatCalories;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Your meal in context', style: theme.textTheme.titleMedium),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _StatTile(
-                    label: 'Calorie load',
-                    value: '${analysis.totalCalories} kcal',
-                    helper: '≈ ${(goalPct * 100).clamp(0, 300).toStringAsFixed(0)}% of daily goal',
-                    accentColor: theme.colorScheme.primary,
-                  ),
+    return _SectionCard(
+      title: 'Your Meal in Context',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _StatTile(
+                  label: 'Calorie load',
+                  value: '${analysis.totalCalories} kcal',
+                  helper: '≈ ${(goalPct * 100).clamp(0, 300).toStringAsFixed(0)}% of daily goal',
+                  accentColor: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _StatTile(
-                    label: 'BMI',
-                    value: bmi == null ? '--' : bmi.toString(),
-                    helper: bmiLabel,
-                    accentColor: theme.colorScheme.secondary,
-                  ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatTile(
+                  label: 'BMI',
+                  value: bmi == null ? '--' : bmi.toString(),
+                  helper: bmiLabel,
+                  accentColor: theme.colorScheme.secondary,
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            LinearProgressIndicator(
-              value: goalPct > 1 ? 1.0 : goalPct,
-              minHeight: 10,
-              backgroundColor: theme.colorScheme.surfaceVariant,
-              valueColor: AlwaysStoppedAnimation(theme.colorScheme.primary),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Daily goal: ${dailyGoal.toInt()} kcal', style: theme.textTheme.bodySmall),
-                Text(
-                  goalPct <= 1 ? '${(goalPct * 100).toStringAsFixed(0)}% used' : 'Goal exceeded',
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 10,
-              runSpacing: 8,
-              children: [
-                _HighlightPill(
-                  icon: Icons.bolt,
-                  label: 'Protein share',
-                  value: _percent(proteinCalories, totalMacroCalories),
-                ),
-                _HighlightPill(
-                  icon: Icons.grass,
-                  label: 'Carb share',
-                  value: _percent(carbsCalories, totalMacroCalories),
-                ),
-                _HighlightPill(
-                  icon: Icons.oil_barrel,
-                  label: 'Fat share',
-                  value: _percent(fatCalories, totalMacroCalories),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          LinearProgressIndicator(
+            value: goalPct > 1 ? 1.0 : goalPct,
+            minHeight: 10,
+            backgroundColor: theme.colorScheme.surfaceVariant,
+            valueColor: AlwaysStoppedAnimation(theme.colorScheme.primary),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Daily goal: ${dailyGoal.toInt()} kcal', style: theme.textTheme.bodySmall),
+              Text(
+                goalPct <= 1 ? '${(goalPct * 100).toStringAsFixed(0)}% used' : 'Goal exceeded',
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 10,
+            runSpacing: 8,
+            children: [
+              _HighlightPill(
+                icon: Icons.bolt,
+                label: 'Protein share',
+                value: _percent(proteinCalories, totalMacroCalories),
+              ),
+              _HighlightPill(
+                icon: Icons.grass,
+                label: 'Carb share',
+                value: _percent(carbsCalories, totalMacroCalories),
+              ),
+              _HighlightPill(
+                icon: Icons.oil_barrel,
+                label: 'Fat share',
+                value: _percent(fatCalories, totalMacroCalories),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -23,6 +23,13 @@ class HomeScreen extends HookConsumerWidget {
     final isOffline = ref.watch(connectivityProvider);
     final ctaPressed = useState(false);
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final mutedAccent = isDarkMode ? theme.colorScheme.primaryContainer : theme.colorScheme.primary;
+    final backgroundGradient = [
+      theme.colorScheme.surface,
+      Color.alphaBlend(mutedAccent.withValues(alpha: isDarkMode ? 0.05 : 0.04), theme.colorScheme.surface),
+      Color.alphaBlend(mutedAccent.withValues(alpha: isDarkMode ? 0.10 : 0.06), theme.colorScheme.surface),
+    ];
 
     final latest = historyState.entries.isNotEmpty ? historyState.entries.first : null;
 
@@ -42,10 +49,7 @@ class HomeScreen extends HookConsumerWidget {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  theme.colorScheme.surface,
-                  theme.colorScheme.primary.withValues(alpha: 0.08),
-                ],
+                colors: backgroundGradient,
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -97,9 +101,9 @@ class HomeScreen extends HookConsumerWidget {
                           if (hour < noonHour && hour >= sunriseHour) {
                             prompt = 'Breakfast is the most important meal! \\(^_^)/';
                           } else if (hour >= noonHour && hour < sunsetHour) {
-                            prompt = 'Perfect time for lunch~ (o^_^o)';
+                            prompt = 'Perfect time for Lunch~ (o^_^o)';
                           } else {
-                            prompt = 'Seems like it\'s dinner time (¬‿¬)';
+                            prompt = 'Seems like it\'s Dinner time (¬‿¬)';
                           }
                           return Text(
                             prompt,
