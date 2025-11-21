@@ -12,44 +12,53 @@ class MacroDonutChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final sections = [
+    final cardColor = theme.cardTheme.color ?? theme.colorScheme.surfaceContainerHighest;
+    final rawSlices = [
       _MacroSlice(value: macros.carbs.toDouble(), color: theme.colorScheme.primary, label: 'Carbs'),
       _MacroSlice(value: macros.protein.toDouble(), color: theme.colorScheme.secondary, label: 'Protein'),
       _MacroSlice(
         value: macros.fat.toDouble(),
-        color: theme.colorScheme.primary.withValues(alpha: 0.5),
+        color: theme.colorScheme.primary.withValues(alpha: 0.55),
         label: 'Fat',
       ),
     ];
 
+    const baseShareFraction = 0.05; // keeps very small slices visible while preserving ordering
+    final total = rawSlices.fold<double>(0, (sum, s) => sum + s.value);
+    final baseBoost = total * baseShareFraction;
+
     return Column(
       children: [
         SizedBox(
-          height: 240,
+          height: 320,
           child: PieChart(
             PieChartData(
-              sectionsSpace: 4,
-              centerSpaceRadius: 70,
-              sections: sections
-                  .map(
-                    (slice) => PieChartSectionData(
-                      value: slice.value,
-                      color: slice.color,
-                      radius: 72,
-                      title: NutriFormatters.gramsShort(slice.value),
-                      titleStyle: theme.textTheme.labelMedium?.copyWith(color: Colors.white),
-                    ),
-                  )
+              startDegreeOffset: -90,
+              sectionsSpace: 10,
+              centerSpaceRadius: 54,
+              sections: rawSlices
+                  .map((slice) => PieChartSectionData(
+                        value: slice.value + baseBoost,
+                        color: slice.color,
+                        radius: 96,
+                        borderSide: BorderSide(color: cardColor, width: 6),
+                        title: NutriFormatters.gramsShort(slice.value),
+                        titlePositionPercentageOffset: 0.55,
+                        titleStyle: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.onPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ))
                   .toList(),
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
         Wrap(
           alignment: WrapAlignment.center,
           spacing: 18,
           runSpacing: 8,
-          children: sections
+          children: rawSlices
               .map(
                 (slice) => Row(
                   mainAxisSize: MainAxisSize.min,
