@@ -93,16 +93,21 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        TweenAnimationBuilder<double>(
-                          tween: Tween(begin: 1, end: ctaPressed.value ? 0.95 : 1),
-                          duration: const Duration(milliseconds: 200),
-                          builder: (context, value, child) {
-                            return Transform.scale(scale: value, child: child);
-                          },
-                          child: NutriGradientButton(
-                            label: 'Scan a Meal',
-                            icon: Icons.bolt,
-                            onPressed: handleScan,
+                        Center(
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 1, end: ctaPressed.value ? 0.95 : 1),
+                            duration: const Duration(milliseconds: 200),
+                            builder: (context, value, child) {
+                              return Transform.scale(scale: value, child: child);
+                            },
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 520, minWidth: 480),
+                              child: NutriGradientButton(
+                                label: 'Scan a Meal',
+                                icon: Icons.bolt,
+                                onPressed: handleScan,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 32),
