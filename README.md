@@ -15,9 +15,8 @@ The objective of this project is to apply advanced project planning, estimation,
 ---
 
 ## 🛠️ Tech Stack & Tools
-* **Language:** Java / Python / TypeScript / C#[cite: 1]
-* **Frameworks:** Spring Boot / React / Angular / Django / .NET[cite: 1]
-* **Database:** PostgreSQL / MySQL / MongoDB[cite: 1]
+* **Language:**   Python [cite: 1]
+* **Frameworks:** Flask / Flutter[cite: 1]
 * **Project Management Tools:** Jira / GitHub Projects / Trello[cite: 1]
 
 ---
