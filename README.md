@@ -87,6 +87,6 @@ SEG4105-Project/
 
 ## 👥 Group Members
 * **Saad Rahman**[cite: 1]
-* **[Member 2 Name]**[cite: 1]
-* **[Member 3 Name]**[cite: 1]
-* **[Member 4 Name]**[cite: 1]
+* **Maaz Zaidi**[cite: 1]
+* **Tariq Jabi**[cite: 1]
+* **Pavel Karmaker**[cite: 1]
