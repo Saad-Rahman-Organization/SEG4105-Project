@@ -1,3 +1,33 @@
+# NutriSnap Flutter Application
+
+## How to Run
+
+1.  Install required Android platform/NDK (only once):
+
+    & "$HOME/AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager.bat" "platforms;android-36" "ndk;27.0.12077973"
+
+2.  Fetch deps and regenerate code:
+
+    flutter pub get
+    dart run build_runner build --delete-conflicting-outputs
+
+3.  Run on emulator/device:
+
+    flutter run -d emulator 
+
+Optional: 
+
+  For initial testing, I would reccomend running:
+
+    flutter run -d chrome
+
+  and then moving on to an emulator/device run. 
+  
+MAAZ ZAIDI, 300246507
+
+# Backend
+
+SAAD RAHMAN WARSI, 300249227
 # SEG4105 Software Project Management - Course Project
 
 [![Course](https://img.shields.io/badge/uOttawa-SEG4105-garnet.svg)](https://catalogue.uottawa.ca/en/courses/seg/)
